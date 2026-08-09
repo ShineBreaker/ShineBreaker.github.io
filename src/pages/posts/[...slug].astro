@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  return (await getCollection('posts')).map((entry) => ({
+    params: { slug: entry.id.replace(/^src\/content\/posts\//, '').replace(/\.org$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: CollectionEntry<'posts'> };
+const { Content } = await render(entry);
+---
+
+<article class="post-sheet" data-pagefind-body itemscope itemtype="https://schema.org/BlogPosting">
+  <header class="post-sheet__header">
+    <p class="eyebrow"><time datetime={entry.data.date.toISOString().slice(0, 10)} itemprop="datePublished">{entry.data.date.toLocaleDateString('zh-CN')}</time></p>
+    <div class="post-title-row">
+      <span class="post-title-arrow" aria-hidden="true">&lt;</span>
+      <h1 id="post-title" itemprop="headline">{entry.data.title}</h1>
+      <span class="post-title-arrow" aria-hidden="true">&gt;</span>
+    </div>
+    {
+      (entry.data.tags ?? []).length > 0 && (
+        <p class="post-sheet__tags">
+          {(entry.data.tags ?? []).map((tag) => (
+            <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+          ))}
+        </p>
+      )
+    }
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    <Content />
+  </div>
+</article>
