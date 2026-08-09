@@ -7,9 +7,11 @@ import uniorgParse from 'uniorg-parse';
 import { extractKeywords } from 'uniorg-extract-keywords';
 import uniorg2rehype from 'uniorg-rehype';
 import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeStringify from 'rehype-stringify';
 import { z } from 'astro/zod';
+import { normalizeHeadings } from '../utils/excerpt';
 
 export interface OrgLoaderOptions {
   /** Directory containing `.org` files, relative to the project root. */
@@ -86,12 +88,17 @@ export function orgLoader(options: OrgLoaderOptions): Loader {
       .use(extractKeywords)
       .use(uniorg2rehype)
       .use(rehypeSlug)
+      .use(rehypeAutolinkHeadings, {
+        behavior: 'prepend',
+        properties: { class: 'headerlink' },
+        content: { type: 'text', value: '' },
+      })
       .use(rehypeHighlight, { detect: false })
       .use(rehypeStringify)
       .process(raw);
 
     const keywords = fileData.data as Record<string, string | undefined>;
-    const html = String(fileData);
+    const html = normalizeHeadings(String(fileData));
     const headings = extractHeadings(html);
 
     const data = await context.parseData({
