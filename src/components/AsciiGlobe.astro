@@ -1,0 +1,21 @@
+---
+interface Props {
+  mode?: 'corner' | 'article';
+}
+
+const { mode = 'corner' } = Astro.props;
+
+const staticGlobe =
+  mode === 'article'
+    ? '       .--.       \n   .-\'    \'.   \n  /  .-==-.  \\  \n |  /  ..  \\  | \n |  \\  --  /  | \n  \\  \'--\'  /   \n   \'.____.\'    '
+    : '   .--.   \n .-\'  \'. \n|  ()  |\n \\    / \n  \'--\'';
+---
+
+<div class={`ascii-globe ascii-globe--${mode}`} data-ascii-globe data-globe-mode={mode} aria-hidden="true">
+  <div class="ascii-globe__frame" data-ascii-globe-frame>
+    <pre class="ascii-globe__layer ascii-globe__layer--fallback" data-globe-fallback>{staticGlobe}</pre>
+    <pre class="ascii-globe__layer ascii-globe__layer--ocean" data-globe-layer="ocean"></pre>
+    <pre class="ascii-globe__layer ascii-globe__layer--land" data-globe-layer="land"></pre>
+    <pre class="ascii-globe__layer ascii-globe__layer--coast" data-globe-layer="coast"></pre>
+  </div>
+</div>

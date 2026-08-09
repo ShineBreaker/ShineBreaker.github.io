@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import PostCard from './PostCard.astro';
+import { SITE } from '../consts';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  pageNum: number;
+  lastPage: number;
+}
+
+const { posts, pageNum, lastPage } = Astro.props;
+
+/** Paginator URLs, with page 1 living at the root (Hexo convention). */
+const pageUrl = (num: number): string => (num === 1 ? '/' : `/page/${num}/`);
+const prevUrl = pageNum > 2 ? pageUrl(pageNum - 1) : '/';
+const nextUrl = pageUrl(pageNum + 1);
+---
+
+<section class="listing listing--home" aria-labelledby="home-title">
+  <header class="listing__header">
+    <p class="eyebrow">journalctl --follow</p>
+    <h1 id="home-title">LATEST LOGS</h1>
+    <p>[READY] {SITE.subtitle || SITE.description}</p>
+  </header>
+  <div class="post-card-grid">
+    {posts.map((post) => <PostCard post={post} />)}
+  </div>
+  {
+    lastPage > 1 && (
+      <nav class="pagination" aria-label="文章分页">
+        {pageNum > 1 && <a class="extend prev" rel="prev" href={prevUrl}>[ PREV ]</a>}
+        {
+          Array.from({ length: lastPage }, (_, i) => i + 1).map((num) =>
+            num === pageNum ? (
+              <span class="page-number current">{num}</span>
+            ) : (
+              <a class="page-number" href={pageUrl(num)}>{num}</a>
+            )
+          )
+        }
+        {pageNum < lastPage && <a class="extend next" rel="next" href={nextUrl}>[ NEXT ]</a>}
+      </nav>
+    )
+  }
+</section>

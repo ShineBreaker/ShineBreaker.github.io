@@ -1,0 +1,43 @@
+---
+interface TaxonomyItem {
+  name: string;
+  count: number;
+}
+
+interface Props {
+  items: TaxonomyItem[];
+  heading: string;
+  detail: string;
+  path: string;
+}
+
+const { items, heading, detail, path } = Astro.props;
+const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<section class="taxonomy-page" aria-labelledby="taxonomy-title">
+  <header class="listing__header">
+    <p class="eyebrow">tree --dirsfirst ./{path}</p>
+    <h1 id="taxonomy-title">{heading}</h1>
+    <p>{detail}</p>
+  </header>
+  {
+    sorted.length > 0 ? (
+      <ul class="taxonomy-grid">
+        {
+          sorted.map((item) => (
+            <li>
+              <a href={`/${path}/${encodeURIComponent(item.name)}/`}>
+                <span>#</span>
+                {item.name}
+                <small>{item.count}</small>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    ) : (
+      <p class="empty-state">[ NO {path.toUpperCase()} YET ]</p>
+    )
+  }
+</section>

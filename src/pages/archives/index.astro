@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArchiveList from '../../components/ArchiveList.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+---
+
+<BaseLayout title="Archives" pageClass="index">
+  <ArchiveList posts={posts} heading="ARCHIVE" detail="全部文章按年份归档" />
+</BaseLayout>

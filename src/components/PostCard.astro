@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { EXCERPT_LENGTH } from '../consts';
+import { formatDate } from '../utils/date';
+import { postUrl } from '../utils/post';
+import { postExcerpt } from '../utils/excerpt';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const href = postUrl(post);
+const excerpt = postExcerpt(post.rendered?.html ?? '', EXCERPT_LENGTH);
+---
+
+<article class="post-card" itemscope itemtype="https://schema.org/BlogPosting">
+  <header>
+    <p class="post-card__meta">
+      <time datetime={formatDate(post.data.date)} itemprop="datePublished">{formatDate(post.data.date)}</time>
+    </p>
+    <h2>
+      <a href={href} itemprop="url">
+        <span itemprop="headline">{post.data.title || 'UNTITLED'}</span>
+      </a>
+    </h2>
+  </header>
+  <p class="post-card__excerpt">{excerpt}</p>
+  <footer class="post-card__footer">
+    <span class="post-card__taxonomy">
+      {
+        post.data.tags?.map((tag) => (
+          <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+        ))
+      }
+    </span>
+    <a class="read-link" href={href}>[ READ ]</a>
+  </footer>
+</article>

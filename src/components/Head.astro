@@ -1,0 +1,33 @@
+---
+import { SITE, PALETTE, RSS } from '../consts';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
+const paletteIds = PALETTE.schemes.map((scheme) => scheme.id);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#1d2021" />
+<title>{pageTitle}</title>
+<meta name="description" content={description ?? SITE.description} />
+<meta name="generator" content={Astro.generator} />
+{RSS && <link rel="alternate" href={RSS} title={SITE.title} type="application/atom+xml" />}
+<script is:inline>
+  {
+    `(function () {
+      var key = 'ascii-orbit.palette';
+      var fallback = ${JSON.stringify(PALETTE.default)};
+      var allowed = ${JSON.stringify(paletteIds)};
+      var selected;
+      try { selected = localStorage.getItem(key); } catch (_) {}
+      if (allowed.indexOf(selected) === -1) selected = fallback;
+      document.documentElement.setAttribute('data-palette', selected);
+    }());`
+  }
+</script>

@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+  content: string;
+  search?: boolean;
+}
+
+const { title, content, search = true } = Astro.props;
+---
+
+<article class="page-sheet" {...(search ? { 'data-pagefind-body': '' } : {})}>
+  <header class="page-sheet__header">
+    <p class="eyebrow">man {title.toLowerCase()}</p>
+    <h1>{title}</h1>
+  </header>
+  <div class="post-content" set:html={content} />
+</article>

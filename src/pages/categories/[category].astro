@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArchiveList from '../../components/ArchiveList.astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { aggregate } from '../../utils/taxonomy';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return [...aggregate(posts, 'categories').entries()].map(([category, { posts }]) => ({
+    params: { category },
+    props: { posts },
+  }));
+}
+
+const { posts } = Astro.props as {
+  posts: CollectionEntry<'posts'>[];
+};
+const category = Astro.params.category as string;
+---
+
+<BaseLayout title={`Category: ${category}`} pageClass="index">
+  <ArchiveList posts={posts} heading={`CATEGORY // ${category}`} detail="分类下的文章" />
+</BaseLayout>

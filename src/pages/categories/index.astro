@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TaxonomyIndex from '../../components/TaxonomyIndex.astro';
+import { getCollection } from 'astro:content';
+import { aggregate } from '../../utils/taxonomy';
+
+const posts = await getCollection('posts');
+const categories = aggregate(posts, 'categories');
+---
+
+<BaseLayout title="categories" pageClass="categories">
+  <TaxonomyIndex items={[...categories.values()]} heading="CATEGORY INDEX" detail="按分类浏览文章" path="categories" />
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { PAGE_SIZE, sortPosts, pageCount } from '../../utils/pagination';
+
+export async function getStaticPaths() {
+  const posts = sortPosts(await getCollection('posts'));
+  const lastPage = pageCount(posts.length);
+  return Array.from({ length: Math.max(0, lastPage - 1) }, (_, i) => {
+    const pageNum = i + 2;
+    return {
+      params: { page: String(pageNum) },
+      props: { posts: posts.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE), pageNum, lastPage },
+    };
+  });
+}
+
+const { posts, pageNum, lastPage } = Astro.props as {
+  posts: CollectionEntry<'posts'>[];
+  pageNum: number;
+  lastPage: number;
+};
+---
+
+<BaseLayout pageClass="index">
+  <PostList posts={posts} pageNum={pageNum} lastPage={lastPage} />
+</BaseLayout>

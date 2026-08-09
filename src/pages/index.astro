@@ -1,11 +1,14 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>EagMore</title>
-  </head>
-  <body>
-    <h1>EagMore</h1>
-  </body>
-</html>
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import { PAGE_SIZE, sortPosts, pageCount } from '../utils/pagination';
+
+const posts = sortPosts(await getCollection('posts'));
+const lastPage = pageCount(posts.length);
+const pagePosts = posts.slice(0, PAGE_SIZE);
+---
+
+<BaseLayout pageClass="index">
+  <PostList posts={pagePosts} pageNum={1} lastPage={lastPage} />
+</BaseLayout>

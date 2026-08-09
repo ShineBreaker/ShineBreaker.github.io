@@ -1,0 +1,72 @@
+---
+import AsciiGlobe from '../components/AsciiGlobe.astro';
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { formatDate } from '../utils/date';
+import { postUrl } from '../utils/post';
+
+interface Props {
+  entry: CollectionEntry<'posts'>;
+  prev?: CollectionEntry<'posts'>;
+  next?: CollectionEntry<'posts'>;
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<section class="article-stage" aria-labelledby="post-title">
+  <AsciiGlobe mode="article" />
+  <article class="post-sheet" data-pagefind-body itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="post-sheet__header">
+      <p class="eyebrow">
+        <time datetime={formatDate(entry.data.date)} itemprop="datePublished">{formatDate(entry.data.date)}</time>
+        {
+          (entry.data.categories ?? []).length > 0 && (
+            <Fragment>
+              {' // '}
+              {(entry.data.categories ?? []).map((category) => (
+                <a href={`/categories/${encodeURIComponent(category)}/`}>{category}</a>
+              ))}
+            </Fragment>
+          )
+        }
+      </p>
+      <div class="post-title-row">
+        <span class="post-title-arrow" aria-hidden="true">&lt;</span>
+        <h1 id="post-title" itemprop="headline">{entry.data.title || 'UNTITLED'}</h1>
+        <span class="post-title-arrow" aria-hidden="true">&gt;</span>
+      </div>
+      {
+        (entry.data.tags ?? []).length > 0 && (
+          <p class="post-sheet__tags">
+            {(entry.data.tags ?? []).map((tag) => (
+              <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+            ))}
+          </p>
+        )
+      }
+    </header>
+    <div class="post-content" itemprop="articleBody">
+      <Content />
+    </div>
+    <nav class="post-navigation" aria-label="文章导航">
+      {
+        prev && (
+          <a href={postUrl(prev)}>
+            ← <span>PREV</span>
+            <strong>{prev.data.title}</strong>
+          </a>
+        )
+      }
+      {
+        next && (
+          <a class="post-navigation__next" href={postUrl(next)}>
+            <span>NEXT</span>
+            <strong>{next.data.title}</strong> →
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</section>

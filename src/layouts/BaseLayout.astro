@@ -1,0 +1,35 @@
+---
+import Head from '../components/Head.astro';
+import Toolbar from '../components/Toolbar.astro';
+import Footer from '../components/Footer.astro';
+import AsciiGlobe from '../components/AsciiGlobe.astro';
+import { GLOBE, PALETTE } from '../consts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  pageClass?: string;
+  showGlobe?: boolean;
+}
+
+const { title, description, pageClass = 'index', showGlobe = GLOBE.enabled } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN" data-site-root="/" data-palette={PALETTE.default}>
+  <head>
+    <Head title={title} description={description} />
+  </head>
+  <body class={`site-page site-page--${pageClass}`}>
+    <a class="skip-link" href="#main-content">跳至正文</a>
+    <Toolbar />
+    <main id="main-content" class="site-main" tabindex="-1">
+      <slot />
+    </main>
+    {showGlobe && <AsciiGlobe mode="corner" />}
+    <Footer />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

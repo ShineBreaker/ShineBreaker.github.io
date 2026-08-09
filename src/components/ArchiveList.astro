@@ -1,0 +1,48 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, formatMonthDay } from '../utils/date';
+import { postUrl } from '../utils/post';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  heading: string;
+  detail: string;
+}
+
+const { posts, heading, detail } = Astro.props;
+const sorted = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+let lastYear: number | null = null;
+---
+
+<section class="archive-page" aria-labelledby="archive-title">
+  <header class="listing__header">
+    <p class="eyebrow">find ./posts -type f</p>
+    <h1 id="archive-title">{heading}</h1>
+    <p>{detail}</p>
+  </header>
+  {
+    sorted.length > 0 ? (
+      <div class="archive-stream">
+        {
+          sorted.map((post) => {
+            const year = post.data.date.getFullYear();
+            const showYear = year !== lastYear;
+            lastYear = year;
+            return (
+              <Fragment>
+                {showYear && <h2 class="archive-year">{year}</h2>}
+                <article class="archive-item">
+                  <time datetime={formatDate(post.data.date)}>{formatMonthDay(post.data.date)}</time>
+                  <a href={postUrl(post)}>{post.data.title || 'UNTITLED'}</a>
+                  <span>{(post.data.tags ?? []).map((tag) => `#${tag} `)}</span>
+                </article>
+              </Fragment>
+            );
+          })
+        }
+      </div>
+    ) : (
+      <p class="empty-state">[ NO ENTRIES FOUND ]</p>
+    )
+  }
+</section>
