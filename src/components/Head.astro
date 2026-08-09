@@ -4,11 +4,13 @@ import { SITE, PALETTE, RSS } from '../consts';
 interface Props {
   title?: string;
   description?: string;
+  type?: 'website' | 'article';
 }
 
-const { title, description } = Astro.props;
+const { title, description, type = 'website' } = Astro.props;
 const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
 const paletteIds = PALETTE.schemes.map((scheme) => scheme.id);
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
 ---
 
 <meta charset="utf-8" />
@@ -17,7 +19,15 @@ const paletteIds = PALETTE.schemes.map((scheme) => scheme.id);
 <title>{pageTitle}</title>
 <meta name="description" content={description ?? SITE.description} />
 <meta name="generator" content={Astro.generator} />
+<link rel="canonical" href={canonical} />
 {RSS && <link rel="alternate" href={RSS} title={SITE.title} type="application/atom+xml" />}
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title ?? SITE.title} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={SITE.title} />
+<meta property="og:description" content={description ?? SITE.description} />
+<meta property="og:locale" content="zh_CN" />
+<meta name="twitter:card" content="summary" />
 <script
   is:inline
   set:html={`(function () {

@@ -9,16 +9,17 @@ interface Props {
   title?: string;
   description?: string;
   pageClass?: string;
+  type?: 'website' | 'article';
   showGlobe?: boolean;
 }
 
-const { title, description, pageClass = 'index', showGlobe = GLOBE.enabled } = Astro.props;
+const { title, description, pageClass = 'index', type = 'website', showGlobe = GLOBE.enabled } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="zh-CN" data-site-root="/" data-palette={PALETTE.default}>
   <head>
-    <Head title={title} description={description} />
+    <Head title={title} description={description} type={type} />
   </head>
   <body class={`site-page site-page--${pageClass}`}>
     <a class="skip-link" href="#main-content">跳至正文</a>

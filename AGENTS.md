@@ -21,15 +21,21 @@ Use `corepack pnpm` (never bare `pnpm` or `npm`) so the version pinned in
 
 ## Commands
 
-Run from the site root (prefixed with `guix shell --manifest=manifest.scm -- corepack pnpm`):
+All commands are wrapped by `just` (see `justfile`), which runs every recipe
+inside the Guix environment with `corepack pnpm` so the pinned toolchain is
+always used:
 
 ```bash
-corepack pnpm dev            # Astro dev server on :4321
-corepack pnpm build:site     # astro build → dist/
-corepack pnpm build:search   # pagefind --site dist --output-subdir pagefind
-corepack pnpm build          # build:site + build:search
-corepack pnpm check          # astro check (type checks + diagnostics)
+guix shell --manifest=manifest.scm -- just dev       # Astro dev server on :4321
+guix shell --manifest=manifest.scm -- just build     # astro build + pagefind → dist/
+guix shell --manifest=manifest.scm -- just check     # astro check (types + diagnostics)
+guix shell --manifest=manifest.scm -- just preview   # serve dist/ on :4321
+guix shell --manifest=manifest.scm -- just install   # sync dependencies
+guix shell --manifest=manifest.scm -- just new NAME  # scaffold an Org post
 ```
+
+`corepack pnpm run test:e2e` runs the Playwright suite against `dist/`
+(builds first, then serves with `astro preview`).
 
 ## Content pipeline
 
