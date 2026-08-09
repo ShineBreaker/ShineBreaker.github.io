@@ -18,16 +18,15 @@ const paletteIds = PALETTE.schemes.map((scheme) => scheme.id);
 <meta name="description" content={description ?? SITE.description} />
 <meta name="generator" content={Astro.generator} />
 {RSS && <link rel="alternate" href={RSS} title={SITE.title} type="application/atom+xml" />}
-<script is:inline>
-  {
-    `(function () {
-      var key = 'ascii-orbit.palette';
-      var fallback = ${JSON.stringify(PALETTE.default)};
-      var allowed = ${JSON.stringify(paletteIds)};
-      var selected;
-      try { selected = localStorage.getItem(key); } catch (_) {}
-      if (allowed.indexOf(selected) === -1) selected = fallback;
-      document.documentElement.setAttribute('data-palette', selected);
-    }());`
-  }
-</script>
+<script
+  is:inline
+  set:html={`(function () {
+    var key = 'ascii-orbit.palette';
+    var fallback = ${JSON.stringify(PALETTE.default)};
+    var allowed = ${JSON.stringify(paletteIds)};
+    var selected;
+    try { selected = localStorage.getItem(key); } catch (_) {}
+    if (allowed.indexOf(selected) === -1) selected = fallback;
+    document.documentElement.setAttribute('data-palette', selected);
+  }());`}
+></script>
