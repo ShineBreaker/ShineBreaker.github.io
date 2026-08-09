@@ -1,4 +1,5 @@
 (specifications->manifest
  '(
    "node"
+   "just"
    ))
