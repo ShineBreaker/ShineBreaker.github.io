@@ -35,3 +35,9 @@ export const PALETTE = {
 } as const;
 
 export const GLOBE = { enabled: true, fps: 18 } as const;
+
+/** 文章内容的授权协议（CC BY 4.0）。 */
+export const CONTENT_LICENSE = {
+  name: 'CC BY 4.0',
+  url: 'https://creativecommons.org/licenses/by/4.0/deed.zh-hans',
+} as const;

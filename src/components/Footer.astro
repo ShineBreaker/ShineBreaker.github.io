@@ -1,9 +1,10 @@
 ---
-import { SITE } from '../consts';
+import { SITE, CONTENT_LICENSE } from '../consts';
 
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <p>[ EOF ] &copy; {year} {SITE.author || SITE.title}</p>
+  <p>文章内容遵循 <a href={CONTENT_LICENSE.url} target="_blank" rel="noopener noreferrer">{CONTENT_LICENSE.name}</a></p>
 </footer>

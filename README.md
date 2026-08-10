@@ -49,9 +49,14 @@ public/              # 字体等静态资源
 
 构建产物 `dist/`、依赖目录 `node_modules/` 等均为本地生成，不纳入版本控制。
 
-## 协议与署名
+## 协议
 
-文章内容版权归 BrokenShine 所有。站点主题为自制的「ASCII Orbit」终端风格设计，保留了 ASCII 地球动画、多套 Base16 配色、Pagefind 全文搜索等特性。
+本仓库区分代码与内容两套协议：
+
+- **代码**（Astro 组件、脚本、配置等）遵循 [MIT 协议](./LICENSE)。
+- **文章内容**（`src/content/posts/` 下的 `.org` 源文件及构建产物）遵循 [CC BY 4.0](./LICENSE-CONTENT.md)：可转载、改编、商用，但**必须署名**原作者、标明是否改动，并附协议链接。
+
+站点主题为自制的「ASCII Orbit」终端风格设计，保留了 ASCII 地球动画、多套 Base16 配色、Pagefind 全文搜索等特性。
 
 ---
 
