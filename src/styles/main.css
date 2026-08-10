@@ -120,6 +120,8 @@
   .ascii-globe__layer--coast { color:color-mix(in srgb, var(--base0A) 72%, var(--base0C)); }
   .ascii-globe--corner { position:fixed; z-index:12; right:max(1rem, env(safe-area-inset-right)); bottom:max(1rem, env(safe-area-inset-bottom)); opacity:.68; }
   .ascii-globe--corner .ascii-globe__frame { font-size:clamp(.56rem, 1vw, .77rem); }
+  .content-license { position:fixed; z-index:12; left:max(1rem, env(safe-area-inset-left)); bottom:max(1rem, env(safe-area-inset-bottom)); margin:0; color:var(--ink-muted); font-size:.66rem; opacity:.62; }
+  .content-license a { text-decoration:underline dotted; text-underline-offset:.15em; }
   .ascii-globe--article { --globe-clear-half:min(25rem, 31vw); --globe-fade-half:min(34rem, 43vw); position:fixed; z-index:0; inset:0; display:grid; place-items:center; overflow:hidden; opacity:.5; -webkit-mask-image:linear-gradient(to right, #000 0, #000 calc(50% - var(--globe-fade-half)), transparent calc(50% - var(--globe-clear-half)), transparent calc(50% + var(--globe-clear-half)), #000 calc(50% + var(--globe-fade-half)), #000 100%); mask-image:linear-gradient(to right, #000 0, #000 calc(50% - var(--globe-fade-half)), transparent calc(50% - var(--globe-clear-half)), transparent calc(50% + var(--globe-clear-half)), #000 calc(50% + var(--globe-fade-half)), #000 100%); }
   .ascii-globe--article .ascii-globe__frame { position:absolute; top:50%; left:50%; font-size:clamp(1.42rem, 1.92vw, 2.25rem); transform:translate(-50%, -50%); }
   .article-stage { position:relative; min-height:calc(100vh - var(--toolbar-height)); isolation:isolate; }
@@ -204,6 +206,7 @@
     .post-card { grid-template-columns:1fr; gap:.55rem; padding-left:.85rem; }
     .post-card__footer { flex-direction:row; align-items:center; justify-content:space-between; } .post-card__taxonomy { justify-content:start; }
     .ascii-globe--corner { right:.5rem; bottom:.55rem; opacity:.45; } .ascii-globe--corner .ascii-globe__frame { font-size:.5rem; }
+    .content-license { left:.5rem; bottom:.55rem; font-size:.55rem; opacity:.4; }
     .ascii-globe--article { --globe-clear-half:42vw; --globe-fade-half:49vw; opacity:.42; }
     .ascii-globe--article .ascii-globe__frame { font-size:clamp(.86rem, 3.82vw, 1rem); }
     .post-title-row { gap:.4rem; }

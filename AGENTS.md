@@ -50,6 +50,15 @@ Post IDs are derived from the file name and are also used as the URL slug. `#+DA
 - Use `#+BEGIN_SRC <lang>` for code blocks; `rehype-highlight` needs a language on every block.
 - Headings inside a post start at `*` and are shifted to `h2+` on render (the page has one `h1`).
 
+## Licensing
+
+The repository splits licensing by asset kind — do not blur the two:
+
+- **Code** (Astro components, scripts, configs) → MIT, see `LICENSE`.
+- **Post content** (`src/content/posts/*.org` and their rendered output) → Creative Commons Attribution 4.0 (CC BY 4.0), see `LICENSE-CONTENT.md`.
+
+`CONTENT_LICENSE` in `src/consts.ts` holds the canonical name + URL; `ContentLicense.astro` is the only place that renders the on-page declaration. Keep the two in sync — change the constant, not the component. The declaration is a `position: fixed` overlay in the bottom-left that mirrors the corner globe in the bottom-right; it must not be folded back into the document-flow footer.
+
 ## Architectural boundaries
 
 - `src/scripts/*.ts`: browser-side code, plain-Vanilla-TS, imported from `src/scripts/main.ts`. Globe, palette and search must stay decoupled from Astro component markup — they bind to `[data-*]` attributes only.
