@@ -24,8 +24,11 @@ jobs:
 
       # withastro/action 自动按 package.json 的 packageManager 字段安装 pnpm，
       # 再执行 pnpm build（含 pagefind 索引）。无需额外 setup-node / action-setup。
+      # 项目锁定 pnpm@11，需要 Node ≥ 22.13（pnpm 11 依赖 node:sqlite）。
       - name: Build site (Astro + Pagefind)
         uses: withastro/action@v3
+        with:
+          node-version: 22
 
   deploy:
     needs: build
