@@ -13,7 +13,9 @@ interface Props {
   showGlobe?: boolean;
 }
 
-const { title, description, pageClass = 'index', type = 'website', showGlobe = GLOBE.enabled } = Astro.props;
+const { title, description, pageClass = 'index', type = 'website' } = Astro.props;
+// 文章页自带 article 模式的大 globe 背景，右下角 corner globe 仅在非文章页显示（对齐原主题 !is_post() 行为）。
+const showGlobe = pageClass !== 'post' && GLOBE.enabled;
 ---
 
 <!doctype html>
