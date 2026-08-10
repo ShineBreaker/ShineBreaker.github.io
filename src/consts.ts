@@ -3,7 +3,7 @@ export const SITE = {
   subtitle: "I'm still waiting for you.",
   description: 'Self blog.',
   author: 'BrokenShine',
-  url: 'https://BrokenShine.codeberg.page',
+  url: 'https://ShineBreaker.github.io',
   language: 'zh-cn',
 } as const;
 
