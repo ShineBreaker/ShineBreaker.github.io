@@ -121,6 +121,10 @@ export function orgLoader(options: OrgLoaderOptions): Loader {
     };
   };
 
+  // `load` re-runs on every watcher event, so register the watcher once —
+  // otherwise each change would stack a fresh set of listeners.
+  let watched = false;
+
   const load = async (context: LoaderContext): Promise<void> => {
     const files = findFiles();
     context.store.clear();
@@ -134,7 +138,8 @@ export function orgLoader(options: OrgLoaderOptions): Loader {
 
     // Keep the dev server in sync when `.org` files change.
     const watcher = context.watcher;
-    if (watcher) {
+    if (watcher && !watched) {
+      watched = true;
       for (const event of ['add', 'change', 'unlink'] as const) {
         watcher.on(event, (changed: string | URL) => {
           const changedPath = typeof changed === 'string' ? changed : fileURLToPath(changed);
