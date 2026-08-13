@@ -15,7 +15,7 @@ const escapeXml = (value: string): string =>
     .replace(/'/g, '&apos;');
 
 function formatAtomDate(date: Date): string {
-  return date.toISOString().replace(/\.000Z$/, '.000Z');
+  return date.toISOString();
 }
 
 function entryXml(post: CollectionEntry<'posts'>, index: number, total: number): string {
@@ -30,9 +30,7 @@ function entryXml(post: CollectionEntry<'posts'>, index: number, total: number):
       <name>${escapeXml(SITE.author)}</name>
     </author>
 ${categories}
-    <content type="html">
-      <![CDATA[${post.rendered?.html ?? ''}]]>
-    </content>
+    <content type="html">${escapeXml(post.rendered?.html ?? '')}</content>
     <id>${url}</id>
     <link href="${url}"/>
     <published>${updated}</published>
