@@ -35,7 +35,7 @@ let lastYear: number | null = null;
                 <article class="archive-item">
                   <time datetime={formatDate(post.data.date)}>{formatMonthDay(post.data.date)}</time>
                   <a href={postUrl(post)}>{post.data.title || 'UNTITLED'}</a>
-                  <span>{(post.data.tags ?? []).map((tag) => `#${tag} `)}</span>
+                  <span>{post.data.tags.map((tag) => `#${tag} `)}</span>
                 </article>
               </Fragment>
             );

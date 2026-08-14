@@ -22,7 +22,7 @@ function formatAtomDate(date: Date): string {
 function entryXml(post: CollectionEntry<'posts'>, index: number, total: number): string {
   const url = `${SITE.url}${postUrl(post)}`;
   const updated = formatAtomDate(post.data.date);
-  const tags = (post.data.tags ?? [])
+  const tags = post.data.tags
     .map((tag) => `    <category term="${escapeXml(tag)}" scheme="${SITE.url}/tags/${encodeURIComponent(tag)}/"/>`)
     .join('\n');
 

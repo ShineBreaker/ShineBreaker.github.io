@@ -22,10 +22,10 @@ const { Content } = await render(entry);
       <p class="eyebrow">
         <time datetime={formatDate(entry.data.date)} itemprop="datePublished">{formatDate(entry.data.date)}</time>
         {
-          (entry.data.categories ?? []).length > 0 && (
+          entry.data.categories.length > 0 && (
             <Fragment>
               {' // '}
-              {(entry.data.categories ?? []).map((category) => (
+              {entry.data.categories.map((category) => (
                 <a href={`/categories/${encodeURIComponent(category)}/`}>{category}</a>
               ))}
             </Fragment>
@@ -38,9 +38,9 @@ const { Content } = await render(entry);
         <span class="post-title-arrow" aria-hidden="true">&gt;</span>
       </div>
       {
-        (entry.data.tags ?? []).length > 0 && (
+        entry.data.tags.length > 0 && (
           <p class="post-sheet__tags">
-            {(entry.data.tags ?? []).map((tag) => (
+            {entry.data.tags.map((tag) => (
               <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
             ))}
           </p>

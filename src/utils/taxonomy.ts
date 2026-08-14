@@ -10,7 +10,7 @@ export interface Taxonomy {
 export function aggregate(posts: CollectionEntry<'posts'>[], key: 'tags' | 'categories'): Map<string, Taxonomy> {
   const map = new Map<string, Taxonomy>();
   for (const post of posts) {
-    for (const name of (post.data[key] ?? []) as string[]) {
+    for (const name of post.data[key]) {
       const entry = map.get(name) ?? { name, count: 0, posts: [] };
       entry.count += 1;
       entry.posts.push(post);
