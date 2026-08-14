@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostLayout from '../../layouts/PostLayout.astro';
 import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import type { InferGetStaticPropsType } from 'astro';
 import { postSlug } from '../../utils/post';
 import { sortPosts } from '../../utils/pagination';
 
@@ -14,11 +14,9 @@ export async function getStaticPaths() {
   }));
 }
 
-const { entry, prev, next } = Astro.props as {
-  entry: CollectionEntry<'posts'>;
-  prev?: CollectionEntry<'posts'>;
-  next?: CollectionEntry<'posts'>;
-};
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, prev, next } = Astro.props;
 ---
 
 <BaseLayout title={entry.data.title} description={entry.data.description} pageClass="post" type="article">

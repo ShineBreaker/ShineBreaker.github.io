@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArchiveList from '../../components/ArchiveList.astro';
 import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import type { InferGetStaticPropsType } from 'astro';
 import { aggregate } from '../../utils/taxonomy';
 
 export async function getStaticPaths() {
@@ -13,9 +13,9 @@ export async function getStaticPaths() {
   }));
 }
 
-const { posts } = Astro.props as {
-  posts: CollectionEntry<'posts'>[];
-};
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { posts } = Astro.props satisfies Props;
 const category = Astro.params.category as string;
 ---
 
