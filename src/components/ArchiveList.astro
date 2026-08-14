@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { formatDate, formatMonthDay } from '../utils/date';
 import { postUrl } from '../utils/post';
+import { sortPosts } from '../utils/pagination';
 
 interface Props {
   posts: CollectionEntry<'posts'>[];
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const { posts, heading, detail } = Astro.props;
-const sorted = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const sorted = sortPosts(posts);
 let lastYear: number | null = null;
 ---
 

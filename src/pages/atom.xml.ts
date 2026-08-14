@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import { SITE } from '../consts';
 import { postUrl } from '../utils/post';
+import { sortPosts } from '../utils/pagination';
 import { toPlainText } from '../utils/excerpt';
 
 export const prerender = true;
@@ -21,7 +22,7 @@ function formatAtomDate(date: Date): string {
 function entryXml(post: CollectionEntry<'posts'>, index: number, total: number): string {
   const url = `${SITE.url}${postUrl(post)}`;
   const updated = formatAtomDate(post.data.date);
-  const categories = (post.data.tags ?? [])
+  const tags = (post.data.tags ?? [])
     .map((tag) => `    <category term="${escapeXml(tag)}" scheme="${SITE.url}/tags/${encodeURIComponent(tag)}/"/>`)
     .join('\n');
 
@@ -29,7 +30,7 @@ function entryXml(post: CollectionEntry<'posts'>, index: number, total: number):
     <author>
       <name>${escapeXml(SITE.author)}</name>
     </author>
-${categories}
+${tags}
     <content type="html">${escapeXml(post.rendered?.html ?? '')}</content>
     <id>${url}</id>
     <link href="${url}"/>
@@ -43,7 +44,7 @@ ${categories}
 }
 
 export async function GET() {
-  const posts = (await getCollection('posts')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  const posts = sortPosts(await getCollection('posts'));
   const updated = posts.length ? formatAtomDate(posts[0].data.date) : formatAtomDate(new Date());
 
   const body = `<?xml version="1.0" encoding="utf-8"?>
