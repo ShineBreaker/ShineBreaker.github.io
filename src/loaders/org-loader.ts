@@ -23,7 +23,7 @@ export interface OrgLoaderOptions {
  * (`2026-03-03`) into a local-time `Date`. Missing components default to
  * midnight, matching how Hexo treated `date:` front matter.
  */
-export function parseOrgDate(value: string): Date {
+function parseOrgDate(value: string): Date {
   const body = value.trim().replace(/^[<[]|[>\]]$/g, '');
   const match = body.match(/^(\d{4})-(\d{2})-(\d{2})(?:\s+\S+)?(?:\s+(\d{2}):(\d{2}))?/);
   if (!match) return new Date(NaN);
@@ -156,8 +156,11 @@ export function orgLoader(options: OrgLoaderOptions): Loader {
     schema: z.object({
       title: z.string().default('UNTITLED'),
       date: z.coerce.date(),
-      tags: z.array(z.string()).default([]),
-      categories: z.array(z.string()).default([]),
+      // Loader always supplies these two fields (splitFiletags returns an
+      // array), so they are non-optional: no `.default([])` which would make
+      // the inferred type `string[] | undefined` at call sites.
+      tags: z.array(z.string()),
+      categories: z.array(z.string()),
       description: z.string().optional(),
     }),
   };
